@@ -5141,6 +5141,28 @@ def create_cumulative_reports(pszPlPath: str) -> None:
     move_cp_step_tsv_files_to_temp_subfolders(pszDirectory)
     move_pj_summary_tsv_files_to_temp_subfolders(pszDirectory)
     move_cp_step_folders_to_temp(pszDirectory)
+    cleanup_cp_step_intermediate_tsv_files(pszDirectory)
+
+
+def cleanup_cp_step_intermediate_tsv_files(pszDirectory: str) -> None:
+    objPatterns = [
+        re.compile(r"^0001_CP別_step0006_(単月|累計)_損益計算書_.*_vertical\.tsv$"),
+        re.compile(r"^0001_CP別_step0007_(単月|累計)_損益計算書_.*_vertical\.tsv$"),
+        re.compile(r"^0001_CP別_step0008_(単月|累計)_損益計算書_.*_計上カンパニー_vertical\.tsv$"),
+        re.compile(r"^0001_CP別_step0009_(単月|累計)_損益計算書_.*_計上カンパニー_vertical\.tsv$"),
+        re.compile(r"^0002_CP別_step0001_(単月|累計)_損益計算書_.*\.tsv$"),
+        re.compile(r"^0002_CP別_step0006_(単月|累計)_損益計算書_.*_vertical\.tsv$"),
+        re.compile(r"^0002_CP別_step0007_(単月|累計)_損益計算書_.*_vertical\.tsv$"),
+        re.compile(r"^0002_CP別_step0008_(単月|累計)_損益計算書_.*_計上グループ_vertical\.tsv$"),
+        re.compile(r"^0002_CP別_step0009_(単月|累計)_損益計算書_.*_計上グループ_vertical\.tsv$"),
+    ]
+    for pszName in os.listdir(pszDirectory):
+        if not any(objPattern.match(pszName) for objPattern in objPatterns):
+            continue
+        pszPath = os.path.join(pszDirectory, pszName)
+        if not os.path.isfile(pszPath):
+            continue
+        os.remove(pszPath)
 
 
 def copy_cp_step0005_vertical_files(pszDirectory: str, objPaths: List[Optional[str]]) -> None:
