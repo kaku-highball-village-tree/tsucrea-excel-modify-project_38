@@ -1431,6 +1431,13 @@ def move_cp_step_folders_to_temp(pszBaseDirectory: str) -> None:
         "0002_CP別_step0007",
         "0002_CP別_step0008",
         "0002_CP別_step0009",
+        "PJ_Summary_step0008_Project",
+        "PJ_Summary_step0009_Project",
+        "PJ_Summary_step0010_Project",
+        "PJ_Summary_step0011_Project",
+        "PJサマリ",
+        "DragAndDropManhourAndPl",
+        "log",
     ]
 
     for pszFolderName in objTargetFolderNames:
@@ -5138,9 +5145,78 @@ def create_cumulative_reports(pszPlPath: str) -> None:
     copy_cp_management_excels(pszCompanyManagementPath, pszGroupManagementPath)
     create_pj_summary_gross_profit_ranking_excel(pszDirectory)
     create_pj_summary_sales_cost_sg_admin_margin_excel(pszDirectory)
+    cleanup_cp_step_intermediate_tsv_files(pszDirectory)
     move_cp_step_tsv_files_to_temp_subfolders(pszDirectory)
     move_pj_summary_tsv_files_to_temp_subfolders(pszDirectory)
     move_cp_step_folders_to_temp(pszDirectory)
+
+
+def cleanup_cp_step_intermediate_tsv_files(pszDirectory: str) -> None:
+    objMonthPattern = r"\d{4}年\d{2}月"
+    objRangePattern = rf"{objMonthPattern}-{objMonthPattern}"
+    objPatterns = [
+        re.compile(
+            rf"^0001_CP別_step0006_単月_損益計算書_{objMonthPattern}_.+_vertical\.tsv$"
+        ),
+        re.compile(
+            rf"^0001_CP別_step0006_累計_損益計算書_{objRangePattern}_.+_vertical\.tsv$"
+        ),
+        re.compile(
+            rf"^0001_CP別_step0007_単月_損益計算書_{objMonthPattern}_.+_vertical\.tsv$"
+        ),
+        re.compile(
+            rf"^0001_CP別_step0007_累計_損益計算書_{objRangePattern}_.+_vertical\.tsv$"
+        ),
+        re.compile(
+            rf"^0001_CP別_step0008_単月_損益計算書_{objMonthPattern}_計上カンパニー_vertical\.tsv$"
+        ),
+        re.compile(
+            rf"^0001_CP別_step0008_累計_損益計算書_{objRangePattern}_計上カンパニー_vertical\.tsv$"
+        ),
+        re.compile(
+            rf"^0001_CP別_step0009_単月_損益計算書_{objMonthPattern}_計上カンパニー_vertical\.tsv$"
+        ),
+        re.compile(
+            rf"^0001_CP別_step0009_累計_損益計算書_{objRangePattern}_計上カンパニー_vertical\.tsv$"
+        ),
+        re.compile(
+            rf"^0002_CP別_step0001_単月_損益計算書_{objMonthPattern}\.tsv$"
+        ),
+        re.compile(
+            rf"^0002_CP別_step0001_累計_損益計算書_{objRangePattern}\.tsv$"
+        ),
+        re.compile(
+            rf"^0002_CP別_step0006_単月_損益計算書_{objMonthPattern}_.+_vertical\.tsv$"
+        ),
+        re.compile(
+            rf"^0002_CP別_step0006_累計_損益計算書_{objRangePattern}_.+_vertical\.tsv$"
+        ),
+        re.compile(
+            rf"^0002_CP別_step0007_単月_損益計算書_{objMonthPattern}_.+_vertical\.tsv$"
+        ),
+        re.compile(
+            rf"^0002_CP別_step0007_累計_損益計算書_{objRangePattern}_.+_vertical\.tsv$"
+        ),
+        re.compile(
+            rf"^0002_CP別_step0008_単月_損益計算書_{objMonthPattern}_計上グループ_vertical\.tsv$"
+        ),
+        re.compile(
+            rf"^0002_CP別_step0008_累計_損益計算書_{objRangePattern}_計上グループ_vertical\.tsv$"
+        ),
+        re.compile(
+            rf"^0002_CP別_step0009_単月_損益計算書_{objMonthPattern}_計上グループ_vertical\.tsv$"
+        ),
+        re.compile(
+            rf"^0002_CP別_step0009_累計_損益計算書_{objRangePattern}_計上グループ_vertical\.tsv$"
+        ),
+    ]
+    for pszName in os.listdir(pszDirectory):
+        if not any(objPattern.match(pszName) for objPattern in objPatterns):
+            continue
+        pszPath = os.path.join(pszDirectory, pszName)
+        if not os.path.isfile(pszPath):
+            continue
+        os.remove(pszPath)
 
 
 def copy_cp_step0005_vertical_files(pszDirectory: str, objPaths: List[Optional[str]]) -> None:
