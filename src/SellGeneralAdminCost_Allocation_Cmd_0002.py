@@ -1443,6 +1443,16 @@ def move_cp_step_folders_to_temp(pszBaseDirectory: str) -> None:
         shutil.move(pszSourcePath, pszDestinationPath)
 
 
+def remove_bycompany_managementcontrol_step0005_directory() -> None:
+    pszDirectoryPath: str = os.path.join(
+        get_script_base_directory(),
+        "ByCompany_ManagementControl_step0005",
+    )
+    if not os.path.isdir(pszDirectoryPath):
+        return
+    shutil.rmtree(pszDirectoryPath)
+
+
 def find_selected_range_path(pszBaseDirectory: str) -> Optional[str]:
     objFileNames: List[str] = [
         "SellGeneralAdminCost_Allocation_Cmd_SelectedRange.txt",
@@ -5141,6 +5151,7 @@ def create_cumulative_reports(pszPlPath: str) -> None:
     move_cp_step_tsv_files_to_temp_subfolders(pszDirectory)
     move_pj_summary_tsv_files_to_temp_subfolders(pszDirectory)
     move_cp_step_folders_to_temp(pszDirectory)
+    remove_bycompany_managementcontrol_step0005_directory()
 
 
 def copy_cp_step0005_vertical_files(pszDirectory: str, objPaths: List[Optional[str]]) -> None:
