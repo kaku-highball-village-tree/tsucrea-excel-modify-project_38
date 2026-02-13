@@ -1431,13 +1431,6 @@ def move_cp_step_folders_to_temp(pszBaseDirectory: str) -> None:
         "0002_CP別_step0007",
         "0002_CP別_step0008",
         "0002_CP別_step0009",
-        "PJ_Summary_step0008_Project",
-        "PJ_Summary_step0009_Project",
-        "PJ_Summary_step0010_Project",
-        "PJ_Summary_step0011_Project",
-        "PJサマリ",
-        "DragAndDropManhourAndPl",
-        "log",
     ]
 
     for pszFolderName in objTargetFolderNames:
@@ -5162,142 +5155,6 @@ def create_cumulative_reports(pszPlPath: str) -> None:
     remove_bycompany_managementcontrol_step0005_directory()
 
 
-def cleanup_cp_step_intermediate_tsv_files(pszDirectory: str) -> None:
-    objMonthPattern = r"\d{4}年\d{2}月"
-    objRangePattern = rf"{objMonthPattern}-{objMonthPattern}"
-    objPatterns = [
-        re.compile(
-            rf"^0001_CP別_step0006_単月_損益計算書_{objMonthPattern}_.+_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0001_CP別_step0006_累計_損益計算書_{objRangePattern}_.+_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0001_CP別_step0007_単月_損益計算書_{objMonthPattern}_.+_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0001_CP別_step0007_累計_損益計算書_{objRangePattern}_.+_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0001_CP別_step0008_単月_損益計算書_{objMonthPattern}_計上カンパニー_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0001_CP別_step0008_累計_損益計算書_{objRangePattern}_計上カンパニー_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0001_CP別_step0009_単月_損益計算書_{objMonthPattern}_計上カンパニー_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0001_CP別_step0009_累計_損益計算書_{objRangePattern}_計上カンパニー_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0002_CP別_step0001_単月_損益計算書_{objMonthPattern}\.tsv$"
-        ),
-        re.compile(
-            rf"^0002_CP別_step0001_累計_損益計算書_{objRangePattern}\.tsv$"
-        ),
-        re.compile(
-            rf"^0002_CP別_step0006_単月_損益計算書_{objMonthPattern}_.+_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0002_CP別_step0006_累計_損益計算書_{objRangePattern}_.+_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0002_CP別_step0007_単月_損益計算書_{objMonthPattern}_.+_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0002_CP別_step0007_累計_損益計算書_{objRangePattern}_.+_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0002_CP別_step0008_単月_損益計算書_{objMonthPattern}_計上グループ_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0002_CP別_step0008_累計_損益計算書_{objRangePattern}_計上グループ_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0002_CP別_step0009_単月_損益計算書_{objMonthPattern}_計上グループ_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0002_CP別_step0009_累計_損益計算書_{objRangePattern}_計上グループ_vertical\.tsv$"
-        ),
-    ]
-    for pszName in os.listdir(pszDirectory):
-        if not any(objPattern.match(pszName) for objPattern in objPatterns):
-            continue
-        pszPath = os.path.join(pszDirectory, pszName)
-        if not os.path.isfile(pszPath):
-            continue
-        os.remove(pszPath)
-
-
-def cleanup_cp_step_intermediate_tsv_files(pszDirectory: str) -> None:
-    objMonthPattern = r"\d{4}年\d{2}月"
-    objRangePattern = rf"{objMonthPattern}-{objMonthPattern}"
-    objPatterns = [
-        re.compile(
-            rf"^0001_CP別_step0006_単月_損益計算書_{objMonthPattern}_.+_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0001_CP別_step0006_累計_損益計算書_{objRangePattern}_.+_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0001_CP別_step0007_単月_損益計算書_{objMonthPattern}_.+_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0001_CP別_step0007_累計_損益計算書_{objRangePattern}_.+_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0001_CP別_step0008_単月_損益計算書_{objMonthPattern}_計上カンパニー_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0001_CP別_step0008_累計_損益計算書_{objRangePattern}_計上カンパニー_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0001_CP別_step0009_単月_損益計算書_{objMonthPattern}_計上カンパニー_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0001_CP別_step0009_累計_損益計算書_{objRangePattern}_計上カンパニー_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0002_CP別_step0001_単月_損益計算書_{objMonthPattern}\.tsv$"
-        ),
-        re.compile(
-            rf"^0002_CP別_step0001_累計_損益計算書_{objRangePattern}\.tsv$"
-        ),
-        re.compile(
-            rf"^0002_CP別_step0006_単月_損益計算書_{objMonthPattern}_.+_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0002_CP別_step0006_累計_損益計算書_{objRangePattern}_.+_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0002_CP別_step0007_単月_損益計算書_{objMonthPattern}_.+_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0002_CP別_step0007_累計_損益計算書_{objRangePattern}_.+_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0002_CP別_step0008_単月_損益計算書_{objMonthPattern}_計上グループ_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0002_CP別_step0008_累計_損益計算書_{objRangePattern}_計上グループ_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0002_CP別_step0009_単月_損益計算書_{objMonthPattern}_計上グループ_vertical\.tsv$"
-        ),
-        re.compile(
-            rf"^0002_CP別_step0009_累計_損益計算書_{objRangePattern}_計上グループ_vertical\.tsv$"
-        ),
-    ]
-    for pszName in os.listdir(pszDirectory):
-        if not any(objPattern.match(pszName) for objPattern in objPatterns):
-            continue
-        pszPath = os.path.join(pszDirectory, pszName)
-        if not os.path.isfile(pszPath):
-            continue
-        os.remove(pszPath)
-
-
 def copy_cp_step0005_vertical_files(pszDirectory: str, objPaths: List[Optional[str]]) -> None:
     pszTargetDirectory: str = os.path.join(get_script_base_directory(), "ByCompany_ManagementControl_step0005")
     os.makedirs(pszTargetDirectory, exist_ok=True)
@@ -5658,21 +5515,44 @@ def build_step0007_rows_for_cp(
         pszLabel = objRow[0] if objRow else ""
         if not pszLabel:
             continue
+
+        pszActualValue = objRow[3] if len(objRow) > 3 else ""
+        pszTrimmedActualValue = (pszActualValue or "").strip()
+        fActualValue: Optional[float] = None
+        if pszTrimmedActualValue != "":
+            try:
+                fActualValue = float(pszTrimmedActualValue)
+            except ValueError:
+                fActualValue = None
+
         if pszLabel in objPriorMap:
             pszPriorValue = objPriorMap[pszLabel]
             pszTrimmedPriorValue = (pszPriorValue or "").strip()
             if pszTrimmedPriorValue == "":
                 objRow[1] = pszPriorValue
-            else:
-                try:
-                    fPriorValue = float(pszTrimmedPriorValue)
-                except ValueError:
-                    objRow[1] = pszPriorValue
-                else:
-                    if abs(fPriorValue) < 0.0000001:
-                        objRow[1] = "'－"
-                    else:
-                        objRow[1] = pszPriorValue
+                continue
+            try:
+                fPriorValue = float(pszTrimmedPriorValue)
+            except ValueError:
+                objRow[1] = pszPriorValue
+                continue
+
+            if abs(fPriorValue) < 0.0000001:
+                objRow[1] = "'－"
+                if fActualValue is not None:
+                    if fActualValue > 0.0:
+                        objRow[4] = "＋∞"
+                    elif fActualValue < 0.0:
+                        objRow[4] = "－∞"
+                continue
+
+            objRow[1] = pszPriorValue
+            if fActualValue is not None:
+                objRatio = (Decimal(str(fActualValue)) / Decimal(str(fPriorValue))).quantize(
+                    Decimal("0.01"),
+                    rounding=ROUND_HALF_UP,
+                )
+                objRow[4] = format(objRatio, "f")
         else:
             objRow[1] = "'－"
     return objInsertedRows
