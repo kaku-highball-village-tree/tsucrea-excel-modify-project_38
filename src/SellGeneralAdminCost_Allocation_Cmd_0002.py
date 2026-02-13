@@ -1418,6 +1418,31 @@ def move_pj_summary_tsv_files_to_temp_subfolders(pszBaseDirectory: str) -> None:
             shutil.move(pszSourcePath, pszDestinationPath)
 
 
+def move_cp_step_folders_to_temp(pszBaseDirectory: str) -> None:
+    pszTempDirectory: str = os.path.join(pszBaseDirectory, "temp")
+    os.makedirs(pszTempDirectory, exist_ok=True)
+
+    objTargetFolderNames: List[str] = [
+        "0001_CP別_step0006",
+        "0001_CP別_step0007",
+        "0001_CP別_step0008",
+        "0001_CP別_step0009",
+        "0002_CP別_step0006",
+        "0002_CP別_step0007",
+        "0002_CP別_step0008",
+        "0002_CP別_step0009",
+    ]
+
+    for pszFolderName in objTargetFolderNames:
+        pszSourcePath: str = os.path.join(pszBaseDirectory, pszFolderName)
+        if not os.path.isdir(pszSourcePath):
+            continue
+        pszDestinationPath: str = os.path.join(pszTempDirectory, pszFolderName)
+        if os.path.isdir(pszDestinationPath):
+            shutil.rmtree(pszDestinationPath)
+        shutil.move(pszSourcePath, pszDestinationPath)
+
+
 def find_selected_range_path(pszBaseDirectory: str) -> Optional[str]:
     objFileNames: List[str] = [
         "SellGeneralAdminCost_Allocation_Cmd_SelectedRange.txt",
@@ -5115,6 +5140,7 @@ def create_cumulative_reports(pszPlPath: str) -> None:
     create_pj_summary_sales_cost_sg_admin_margin_excel(pszDirectory)
     move_cp_step_tsv_files_to_temp_subfolders(pszDirectory)
     move_pj_summary_tsv_files_to_temp_subfolders(pszDirectory)
+    move_cp_step_folders_to_temp(pszDirectory)
 
 
 def copy_cp_step0005_vertical_files(pszDirectory: str, objPaths: List[Optional[str]]) -> None:
